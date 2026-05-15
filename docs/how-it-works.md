@@ -87,9 +87,9 @@ About 30 seconds after you sign in, **a small Windows dialog appears**:
 ```
 Restore 3 Claude session(s)?
 
-  wt   C:\Dev\Carvana.AddressVerification    [a400d7a5]
-  wt   C:\Dev\automation                     [b9f3c2d1]
-  wt   C:\Dev\Hydra                          [e7a82914]
+  wt   C:\Dev\my-api.service                 [a400d7a5]
+  wt   C:\Dev\automation-toolkit             [b9f3c2d1]
+  wt   C:\Dev\platform                       [e7a82914]
 
 [Yes]  [No]
 ```
@@ -225,8 +225,8 @@ restore to spawn duplicates. The system handles this in two ways:
 Claude Code stores conversations in
 `~/.claude/projects/<encoded-folder-path>/<session-uuid>.jsonl`. The
 encoding is "replace every non-alphanumeric character with a dash" — so
-`C:\Dev\Carvana.AddressVerification` becomes
-`C--Dev-Carvana-AddressVerification`. The daemon mirrors this encoding
+`C:\Dev\my-api.service` becomes
+`C--Dev-my-api-service`. The daemon mirrors this encoding
 to find the right project folder, then takes the newest .jsonl file as
 the session ID. This is how we link a recorder JSON back to a real Claude
 conversation file.

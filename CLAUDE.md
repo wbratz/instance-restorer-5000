@@ -110,7 +110,7 @@ naming. Examples:
 | Input cwd | Encoded key |
 |-----------|-------------|
 | `C:\Dev\foo` | `C--Dev-foo` |
-| `C:\Dev\Carvana.AddressVerification` | `C--Dev-Carvana-AddressVerification` |
+| `C:\Dev\my-api.service` | `C--Dev-my-api-service` |
 | `/Users/me/proj` | `-Users-me-proj` |
 
 Used by the daemon to find session JSONLs in `~/.claude/projects/<key>/`.
@@ -214,8 +214,9 @@ Iterating on Warp/Ghostty native automation is a reasonable v2.
 
 ### Bundle ID prefix
 
-Use `com.claude-restorer.*` for plist `Label` keys. Was `com.bbratz.*`
-in early drafts — that's wrong, has a personal handle. Don't reintroduce.
+Use `com.claude-restorer.*` for plist `Label` keys. Don't introduce a
+personal handle (e.g. `com.<your-name>.*`) — these labels are visible
+in `launchctl list` and shared across contributors.
 
 ## What's out of scope (don't propose these)
 

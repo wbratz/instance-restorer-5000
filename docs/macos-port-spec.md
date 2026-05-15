@@ -270,7 +270,7 @@ command. Cleaner than Terminal.app's `do script`.
 Two `.plist` files in `~/Library/LaunchAgents/`. Generated from templates
 during install (the installer substitutes `@INSTALL_DIR@` and `@USER@`).
 
-**`com.bbratz.claude-restorer.daemon.plist`:**
+**`com.claude-restorer.daemon.plist`:**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -279,7 +279,7 @@ during install (the installer substitutes `@INSTALL_DIR@` and `@USER@`).
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.bbratz.claude-restorer.daemon</string>
+  <string>com.claude-restorer.daemon</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
@@ -300,13 +300,13 @@ during install (the installer substitutes `@INSTALL_DIR@` and `@USER@`).
 `StartInterval=60` fires every 60 seconds while the user session is active.
 launchd auto-starts the agent at user login.
 
-**`com.bbratz.claude-restorer.restore.plist`:**
+**`com.claude-restorer.restore.plist`:**
 
 ```xml
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.bbratz.claude-restorer.restore</string>
+  <string>com.claude-restorer.restore</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
@@ -329,9 +329,9 @@ the standard workaround.
 
 ```bash
 launchctl bootstrap "gui/$(id -u)" \
-  "$HOME/Library/LaunchAgents/com.bbratz.claude-restorer.daemon.plist"
+  "$HOME/Library/LaunchAgents/com.claude-restorer.daemon.plist"
 launchctl bootstrap "gui/$(id -u)" \
-  "$HOME/Library/LaunchAgents/com.bbratz.claude-restorer.restore.plist"
+  "$HOME/Library/LaunchAgents/com.claude-restorer.restore.plist"
 ```
 
 `bootstrap` is the modern verb (replaced `load` in macOS 10.10+).
@@ -341,16 +341,16 @@ appear.
 **Unloading (uninstaller):**
 
 ```bash
-launchctl bootout "gui/$(id -u)/com.bbratz.claude-restorer.daemon"
-launchctl bootout "gui/$(id -u)/com.bbratz.claude-restorer.restore"
-rm ~/Library/LaunchAgents/com.bbratz.claude-restorer.{daemon,restore}.plist
+launchctl bootout "gui/$(id -u)/com.claude-restorer.daemon"
+launchctl bootout "gui/$(id -u)/com.claude-restorer.restore"
+rm ~/Library/LaunchAgents/com.claude-restorer.{daemon,restore}.plist
 ```
 
 **Manual triggers (equivalent to `Start-ScheduledTask`):**
 
 ```bash
-launchctl kickstart -k "gui/$(id -u)/com.bbratz.claude-restorer.restore"
-launchctl kickstart -k "gui/$(id -u)/com.bbratz.claude-restorer.daemon"
+launchctl kickstart -k "gui/$(id -u)/com.claude-restorer.restore"
+launchctl kickstart -k "gui/$(id -u)/com.claude-restorer.daemon"
 ```
 
 ### Installer: `macos/bin/install-all.sh`
@@ -393,10 +393,8 @@ Reverses the above. Default removes state dir; `--keep-state` and
 
 ## Open decisions before implementation
 
-1. **Bundle ID prefix.** `com.bbratz.claude-restorer` (current draft) vs
-   generic `com.claude-restorer.*`. Latter avoids personal name in shared
-   tool identifiers. **Recommend: rename to `com.claude-restorer.*` for
-   the macOS plist labels.**
+1. **Bundle ID prefix.** Resolved: `com.claude-restorer.*` for plist
+   `Label` keys (avoids any personal name in shared tool identifiers).
 2. **`jq` requirement.** Yes — assume present. If absent, installer
    prints `brew install jq` and exits. Avoids reimplementing JSON in bash.
 3. **Warp / Ghostty support tier.** v1: open-folder + clipboard fallback,

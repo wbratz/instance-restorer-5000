@@ -125,7 +125,7 @@ Get-ChildItem $env:USERPROFILE\.claude-restorer\sessions\
   "wt_session": "4986d202-57cd-4b44-9709-ffd19f880bfe",
   "started_at": "2026-05-15T15:56:27Z",
   "session_id": "f6c1c0f9-ea7b-4375-8533-d6409449b242",
-  "real_claude": "C:\\Users\\BBratz\\.local\\bin\\claude.exe",
+  "real_claude": "C:\\Users\\alice\\.local\\bin\\claude.exe",
   "args": []
 }
 ```

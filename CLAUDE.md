@@ -35,7 +35,17 @@ instance-restorer-5000/
 │   ├── restore.ps1               # the prompt + relauncher
 │   ├── install-all.ps1           # one-shot full install (shim + tasks)
 │   └── uninstall-all.ps1
-├── macos/bin/               # Mac scripts (in progress, branch: feature/macos-port)
+├── macos/bin/               # Mac scripts (built; awaits Mac smoke verification)
+│   ├── claude-shim.sh            # bash recorder; TERM_PROGRAM-based detection
+│   ├── install-shim.{sh}         # alias into ~/.zshrc + ~/.bashrc
+│   ├── uninstall-shim.sh
+│   ├── snapshot-daemon.sh        # bash port; jq + BSD date/stat/ps
+│   ├── restore.sh                # osascript + per-terminal AppleScript
+│   ├── install-all.sh            # shim + LaunchAgent registration
+│   ├── uninstall-all.sh
+│   └── plists/                   # LaunchAgent templates (@INSTALL_DIR@ + @USER@)
+├── shared/
+│   └── record-schema.md     # Cross-platform JSON contract (single source of truth)
 └── docs/
     ├── how-it-works.md      # User-facing explanation, demo material
     └── macos-port-spec.md   # Design doc for the Mac port
@@ -55,11 +65,12 @@ at absolute paths from when they ran `install-all.ps1`).
 | 2 | Windows snapshot daemon | ✅ shipped |
 | 3 | Windows restore | ✅ shipped |
 | 4 | Windows installer + Task Scheduler | ✅ shipped |
-| M0 | Add `macos/bin/` + `shared/` directories | in progress |
-| M1 | Mac recorder + installer | not started |
-| M2 | Mac snapshot daemon | not started |
-| M3 | Mac restore | not started |
-| M4 | Mac LaunchAgents + master installer | not started |
+| M0 | Add `macos/bin/` + `shared/` directories | ✅ on `feature/macos-port` |
+| M1 | Mac recorder + installer | ✅ on `feature/macos-port` |
+| M2 | Mac snapshot daemon | ✅ on `feature/macos-port` |
+| M3 | Mac restore | ✅ on `feature/macos-port` |
+| M4 | Mac LaunchAgents + master installer | ✅ on `feature/macos-port` |
+| M5 | Hands-on verification by a Mac user (smoke + edge cases) | pending — needs Mac access |
 
 ## Critical contracts (DO NOT BREAK without coordination)
 

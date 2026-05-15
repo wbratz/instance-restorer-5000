@@ -46,19 +46,14 @@ decisions and structure needed before Mac code lands.
 Records on disk are interchangeable in shape; in practice each side reads
 its own state dir.
 
-## Repo layout (proposed when porting)
+## Repo layout (v1 — asymmetric, additive)
 
 ```
 instance-restorer-5000/
-├── README.md                    # one-pager linking to per-OS docs
-├── LICENSE
-├── docs/
-│   ├── architecture.md          # cross-platform overview (lift from this doc)
-│   ├── install-windows.md       # current README content split out
-│   ├── install-macos.md
-│   └── macos-port-spec.md       # this file
-├── windows/
-│   └── bin/                     # current bin/ moves here
+├── README.md
+├── CLAUDE.md
+├── bin/                         # Windows scripts — KEPT IN PLACE in v1
+│   └── (existing PowerShell + bash files)
 ├── macos/
 │   └── bin/
 │       ├── claude-shim.sh
@@ -71,9 +66,23 @@ instance-restorer-5000/
 │       └── plists/
 │           ├── daemon.plist.template
 │           └── restore.plist.template
+├── docs/
+│   ├── how-it-works.md
+│   └── macos-port-spec.md       # this file
 └── shared/
     └── record-schema.md
 ```
+
+**Why `bin/` instead of `windows/bin/` for v1:** existing Windows users
+already ran `install-all.ps1`, which baked the absolute path into their
+scheduled tasks. Moving `bin/` would silently break their scheduled
+tasks. v2 may symmetrize to `windows/bin/` + `macos/bin/` with a
+deprecation cycle (the installer would detect old layout, offer to
+re-register tasks against the new path).
+
+For now the asymmetry is the right trade — Mac users' install path is
+`macos/bin/install-all.sh`, Windows users' is `bin/install-all.ps1`.
+Per-OS install docs make this clear.
 
 ## Shared contracts (must stay identical Windows ↔ macOS)
 

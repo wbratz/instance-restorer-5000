@@ -12,10 +12,26 @@ Per-user install. No admin rights needed.
 
 ## Install
 
+### 1. Clone
+
+Pick any stable location and clone the repo there. **Once installed, the
+scheduled tasks pin the absolute paths of the scripts** — moving the
+directory later breaks restore + daemon. The examples below assume
+`$HOME\instance-restorer-5000` (i.e. `%USERPROFILE%\instance-restorer-5000`):
+
+```powershell
+git clone https://github.com/wbratz/instance-restorer-5000.git $HOME\instance-restorer-5000
+```
+
+If you put it somewhere else, substitute that path everywhere you see
+`$HOME\instance-restorer-5000` below.
+
+### 2. Run the installer
+
 From any PowerShell window:
 
 ```powershell
-& 'C:\Dev\instance-restorer-5000\bin\install-all.ps1'
+& "$HOME\instance-restorer-5000\bin\install-all.ps1"
 ```
 
 This does three things:
@@ -42,27 +58,29 @@ The pwsh shim only intercepts launches from a pwsh shell. If you also
 launch `claude` from bash, install the bash shim:
 
 ```bash
-bash /c/Dev/instance-restorer-5000/bin/install-shim.sh
+bash "$HOME/instance-restorer-5000/bin/install-shim.sh"
 ```
 
-For WSL, run the bash installer **inside the distro** (not from Windows):
+For WSL, run the bash installer **inside the distro** (not from Windows).
+WSL's `$HOME` points at the Linux home, not the Windows clone — point at
+the Windows path explicitly:
 
 ```bash
-# inside `wsl -d Ubuntu`
-bash /mnt/c/Dev/instance-restorer-5000/bin/install-shim.sh
+# inside `wsl -d Ubuntu` (replace <you> with your Windows username)
+bash /mnt/c/Users/<you>/instance-restorer-5000/bin/install-shim.sh
 ```
 
 ## Uninstall
 
 ```powershell
-& 'C:\Dev\instance-restorer-5000\bin\uninstall-all.ps1'
+& "$HOME\instance-restorer-5000\bin\uninstall-all.ps1"
 ```
 
 Removes both scheduled tasks, the `$PROFILE` block, and (by default) the
 state dir at `%USERPROFILE%\.claude-restorer`. Pass `-KeepShim` to leave
 the function in `$PROFILE`, or `-KeepState` to preserve records.
 
-For the bash side: `bash /c/Dev/instance-restorer-5000/bin/uninstall-shim.sh`.
+For the bash side: `bash "$HOME/instance-restorer-5000/bin/uninstall-shim.sh"`.
 
 ---
 
@@ -104,8 +122,8 @@ Start-ScheduledTask -TaskName ClaudeRestorer-Restore
 Start-ScheduledTask -TaskName ClaudeRestorer-Daemon
 
 # Or invoke the scripts directly:
-& 'C:\Dev\instance-restorer-5000\bin\restore.ps1' -DryRun  # preview, no relaunch
-& 'C:\Dev\instance-restorer-5000\bin\snapshot-daemon.ps1'
+& "$HOME\instance-restorer-5000\bin\restore.ps1" -DryRun  # preview, no relaunch
+& "$HOME\instance-restorer-5000\bin\snapshot-daemon.ps1"
 
 # Task status:
 Get-ScheduledTask -TaskName 'ClaudeRestorer-*' | Get-ScheduledTaskInfo
@@ -121,7 +139,7 @@ Get-ChildItem $env:USERPROFILE\.claude-restorer\sessions\
   "pid": 22372,
   "host": "wt",
   "wrapper": "wait",
-  "cwd": "C:\\Dev\\instance-restorer-5000",
+  "cwd": "C:\\Users\\alice\\my-project",
   "wt_session": "4986d202-57cd-4b44-9709-ffd19f880bfe",
   "started_at": "2026-05-15T15:56:27Z",
   "session_id": "f6c1c0f9-ea7b-4375-8533-d6409449b242",

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.claude-restorer.restore</string>
+
+  <!-- launchd has no native "delay after RunAtLoad" key. Wrap in a bash
+       sleep so the desktop session (Dock, Finder, terminals) has time
+       to settle before the dialog appears. -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>sleep 30 &amp;&amp; exec @INSTALL_DIR@/macos/bin/restore.sh</string>
+  </array>
+
+  <!-- Fires once when the LaunchAgent loads — that's at user login. -->
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/@USER@/.claude-restorer/launchd-restore.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/@USER@/.claude-restorer/launchd-restore.err</string>
+</dict>
+</plist>

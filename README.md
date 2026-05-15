@@ -10,7 +10,7 @@ Per-user install. No admin rights needed.
 
 ---
 
-## Install
+## Install — Windows
 
 ### 1. Clone
 
@@ -70,7 +70,7 @@ the Windows path explicitly:
 bash /mnt/c/Users/<you>/instance-restorer-5000/bin/install-shim.sh
 ```
 
-## Uninstall
+## Uninstall — Windows
 
 ```powershell
 & "$HOME\instance-restorer-5000\bin\uninstall-all.ps1"
@@ -81,6 +81,64 @@ state dir at `%USERPROFILE%\.claude-restorer`. Pass `-KeepShim` to leave
 the function in `$PROFILE`, or `-KeepState` to preserve records.
 
 For the bash side: `bash "$HOME/instance-restorer-5000/bin/uninstall-shim.sh"`.
+
+---
+
+## Install — macOS
+
+> **Status:** built and unit-tested on Git Bash; awaiting hands-on
+> verification by a Mac user before recommending broadly. See
+> `docs/macos-port-spec.md`.
+
+Prerequisite: `jq` (`brew install jq` if missing).
+
+### 1. Clone
+
+Pick any stable location and clone there. The LaunchAgent plists pin the
+absolute path of the scripts; moving the directory later breaks restore +
+daemon. Examples assume `$HOME/instance-restorer-5000`:
+
+```bash
+git clone https://github.com/wbratz/instance-restorer-5000.git $HOME/instance-restorer-5000
+```
+
+### 2. Run the installer
+
+```bash
+bash $HOME/instance-restorer-5000/macos/bin/install-all.sh
+```
+
+This does three things:
+
+1. Adds a `claude` alias to your `~/.zshrc` (and `~/.bashrc` /
+   `~/.bash_profile` if they exist) so launches go through the recorder.
+2. Generates two LaunchAgent plists in `~/Library/LaunchAgents/`:
+   - `com.claude-restorer.restore` — runs at logon + 30s. Shows a Yes/No
+     dialog (osascript) if any sessions survived; on Yes, relaunches each
+     in its original terminal.
+   - `com.claude-restorer.daemon` — runs every 60s. Same job as the
+     Windows daemon: backfill session_id, prune dead records.
+3. Loads both via `launchctl bootstrap gui/$(id -u)`.
+
+Open a new terminal and verify:
+
+```bash
+type claude
+# claude is an alias for /Users/.../instance-restorer-5000/macos/bin/claude-shim.sh
+```
+
+No `sudo`. Per-user.
+
+## Uninstall — macOS
+
+```bash
+bash $HOME/instance-restorer-5000/macos/bin/uninstall-all.sh
+```
+
+Unloads both LaunchAgents (`launchctl bootout`), removes the plists from
+`~/Library/LaunchAgents/`, removes the alias from your shell rc files,
+and removes the state dir. Pass `--keep-shim` or `--keep-state` to
+preserve those.
 
 ---
 

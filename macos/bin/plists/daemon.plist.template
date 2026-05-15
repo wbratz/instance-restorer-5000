@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.claude-restorer.daemon</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>@INSTALL_DIR@/macos/bin/snapshot-daemon.sh</string>
+  </array>
+
+  <!-- Fire every 60 seconds while the user session is active. -->
+  <key>StartInterval</key>
+  <integer>60</integer>
+
+  <!-- Don't fire at LaunchAgent load time; let the restore agent run
+       first, then this kicks in 60s after that. -->
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/@USER@/.claude-restorer/launchd-daemon.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/@USER@/.claude-restorer/launchd-daemon.err</string>
+</dict>
+</plist>

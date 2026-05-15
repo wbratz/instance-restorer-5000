@@ -1,0 +1,13 @@
+# Force LF on shell scripts so they run on macOS/Linux even if checked out
+# from a Windows clone.
+*.sh   text eol=lf
+*.bash text eol=lf
+
+# PowerShell stays CRLF (its native).
+*.ps1 text eol=crlf
+
+# Markdown — let git decide per platform.
+*.md text
+
+# Templates we'll add for the Mac port.
+*.plist text eol=lf

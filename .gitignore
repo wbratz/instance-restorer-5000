@@ -1,0 +1,20 @@
+# Runtime state — lives in %USERPROFILE%\.claude-restorer\, but if anyone
+# tests inside the repo it'd land here.
+.claude-restorer/
+sessions/
+*.log
+*.tmp
+*.bak
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Claude Code workspace
+.claude/
+
+# OS junk
+desktop.ini

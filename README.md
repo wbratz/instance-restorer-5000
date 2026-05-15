@@ -136,7 +136,11 @@ as a child and a `try/finally` removes the record on normal exit).
 
 ## Limitations
 
-- **cmd.exe / nu / fish not supported.** Bash and PowerShell only.
+- **cmd.exe / nu / fish not supported.** Bash and PowerShell only. cmd
+  has no shell-level alias/function mechanism we could hook; supporting
+  it would require a `claude.cmd` shim earlier on `PATH` plus invasive
+  installer changes. Not planned unless someone needs it — switch to
+  PowerShell or Git Bash for Claude work.
 - **Cursor detection is heuristic.** Relies on `CURSOR_TRACE_ID` or
   `cursor` substring in `TERM_PROGRAM_VERSION` / `VSCODE_GIT_ASKPASS_NODE`.
   If a Cursor launch shows up as `host: "vscode"`, run `gci env:` in that
